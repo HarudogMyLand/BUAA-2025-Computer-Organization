@@ -29,4 +29,3 @@ def dump_to_hex():
             os.system(cmd)
         except:
             print("Invalid path")
-dump_to_hex()

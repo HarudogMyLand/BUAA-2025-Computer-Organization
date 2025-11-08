@@ -6,4 +6,3 @@ def mips_run_byMARS():
     cmd = "java -jar MARS-main.jar p nc mc CompactDataAtZero mips.asm"
     os.system(cmd)
     # print("done")
-mips_run_byMARS()

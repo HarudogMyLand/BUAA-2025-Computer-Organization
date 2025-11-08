@@ -1,29 +1,36 @@
-from mipsCheck import run_once
+import os
 import sys
+from time import sleep
+
+from mipsCheck import run_once
+from mipsCMD import get_parser, restart_all
+
+parser = get_parser()
+args = parser.parse_args()
+num1 = args.s
+num2 = args.js
+jump = args.nj
+
+restart = args.r
+
+if restart:
+    restart_all()
+    sys.exit(0)
 
 try:
     times = -1
+    print("Test start with index 0")
 
     while times <= 0 or times > 50:
-        print("Test start with index 1")
-        times = int(input("How many times do you want to run? (input a positive num less than 50): ").strip())
+
+        try:
+            times = int(input("How many times do you want to run? (input a positive num less than 50): ").strip())
+        except ValueError:
+            print("Invalid input, are you joking?")
 
     cnt = 0
 
-    num1 = 10
-    num2 = 10
-    jump = True
-
-    if len(sys.argv) > 1 and sys.argv[1].isdigit():
-        num1 = int(sys.argv[1])
-    if len(sys.argv) > 2 and sys.argv[2].isdigit():
-        num2 = int(sys.argv[2])
-    if len(sys.argv) > 3:
-        if sys.argv[3] == "-T" or sys.argv[3] == "-t":
-            jump = True
-        elif sys.argv[3] == "-F" or sys.argv[3] == "-f":
-            jump = False
-
+    print(f"Generate mode: Blocks-{num1}, J-{num2}, jump = {jump}")
 
     while times > 0:
         print(f"No. {cnt} test started".center(20, "="))
@@ -36,6 +43,12 @@ try:
         print(f"End".center(20, "="))
 
 except KeyboardInterrupt:
-    print("You have terminated the program")
+    print("Waiting...")
+    for i in range(101):
+        bar = "=" * (i // 2)
+        spaces = " " * (50 - (i // 2))
+        print(f"Killing output processing: [{bar}{spaces}] {i}%", end="\r")
+        sleep(0.02)
+    print("\nYou have terminated the output processing")
 except Exception as e:
     print(e)

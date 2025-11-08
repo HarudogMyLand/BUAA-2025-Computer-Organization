@@ -22,7 +22,8 @@ def run_once(num1, num2, jump) -> bool:
 
     mipsRunByMARS.mips_run_byMARS()
 
-    mipsRunByVerilog.run_ise_simulation()
+    if not mipsRunByVerilog.run_ise_simulation():
+        return False
     mipsRunByVerilog.process_simulation_output()
 
     difference = mipsCheckAccuracy.cmp_output_accuracy("verilog.txt", "model_CPU.txt")

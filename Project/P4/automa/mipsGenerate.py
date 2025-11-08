@@ -87,31 +87,32 @@ def generate_random_operation_with_no_jump(code: list, nums: int):
             code.append(f"{op} ${rd}, ${rs}, ${rt}")
 
 
-def generate(args1 = 5, num = 10, with_jump = True) -> str:
+def generate(args1 = 5, num = 10, jump = True) -> str:
     """
     Generate code
+    :param jump:
     :param args1:
     :param num:
     :return:
     """
-    code = []
-    initial_regs(code)
-    if with_jump:
+    code_list = []
+    initial_regs(code_list)
+    if jump:
         while args1 > 0:
             if random.random() < 0.2:
-                generate_random_jump(code)
+                generate_random_jump(code_list)
                 pass
             else:
-                generate_random_operation_with_no_jump(code, num)
+                generate_random_operation_with_no_jump(code_list, num)
             args1 -= 1
     else:
         while args1 > 0:
-            generate_random_operation_with_no_jump(code, num)
+            generate_random_operation_with_no_jump(code_list, num)
             args1 -= 1
 
-    return '\n'.join(code)
+    return '\n'.join(code_list)
 
-def mips_generate_and_write(num1:int, num2:int, jump = True) -> None:
+def mips_generate_and_write(num1:int, num2:int, jump) -> None:
     """
     Generate mips code to mips.asm
     num1: length of normal code
@@ -128,5 +129,3 @@ def mips_generate_and_write(num1:int, num2:int, jump = True) -> None:
         print("Error, no permission")
     except Exception as e:
         print(f"Error: {e}")
-        
-mips_generate_and_write(5, 5)

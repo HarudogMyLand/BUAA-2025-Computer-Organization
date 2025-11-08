@@ -16,7 +16,7 @@
 ### 环境要求
 
 - Python 3.x
-- MARS MIPS 模拟器
+- MARS MIPS 模拟器(必须是能够和本文件夹中自带的魔改功能一致的)
 - Xilinx ISE
 
 ### 使用方法
@@ -48,16 +48,24 @@ python mipsFinal.py
    - 对比 MARS 和 Verilog 的执行结果
    - 检查匹配度和准确性
 
+## 命令行参数
+
+支持以下命令行参数：
+- `-r` ：Restart：删除所有非`.py`,`.v`,`.jar`,`.md`文件
+- `-s` ：Size：指定生成的`blocks`数目
+- `-js`：Jump Size：指定`J blocks`大小
+- `nj` ：No Jump: 生成无跳转指令的测试
+
 ## 注意事项
 
 - `mipsRunByVerilog.py` 参考了 [相关技术博客](https://foreveryolo.top/posts/34987/index.html) 的运行方法
-- 当前版本 v0.5.0，需要在代码中手动配置工具路径
+- 当前版本 v0.6.0，您需要在控制台输入路径
 
 ## 待办功能
 
-- [ ] 配置文件管理工具路径
-- [ ] 命令行参数支持
-- [ ] 增加指令执行次数
+- [x] 配置文件管理工具路径
+- [x] 命令行参数支持
+- [x] 增加指令执行次数
 - [ ] 改进错误报告机制
 
 ## 许可证

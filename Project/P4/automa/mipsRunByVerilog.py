@@ -3,9 +3,9 @@ import subprocess
 
 # https://foreveryolo.top/posts/34987/index.html is referred!!!
 
-cpu_path = r"C:\Users\Harudog\Desktop\Use\WorkingArea\SrcCode\coCode\2025\coHw\p4\automaVerilog"
-ise_path = r"C:\Xilinx\14.7\ISE_DS\ISE"
 run_time = "2500ns"
+cpu_path = r""
+ise_path = r""
 
 import os
 
@@ -16,6 +16,39 @@ def run_ise_simulation():
     Then, generate a .prj and a .tcl file to start generation
     """
     # print("Running ISE simulation...")
+    global cpu_path, ise_path, run_time
+    try:
+        with open("path_config.txt", "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if line.startswith("cpu_path"):
+                    cpu_path = line.split("=")[-1].strip() if "=" in line else line.replace("cpu_path", "").strip()
+                elif line.startswith("ise_path"):
+                    ise_path = line.split("=")[-1].strip() if "=" in line else line.replace("ise_path", "").strip()
+            if not cpu_path or not ise_path:
+                raise FileNotFoundError("Paths not found in config file")
+    except FileNotFoundError:
+        print("ISE simulation necessary files not found.")
+        print("Mat I remind you, that you could put your .v file in the verilog_project folder of this script.")
+        print("But sorry, you still have to input the absolute path of them.")
+        with open("path_config.txt", 'w') as f:
+            cpu = input("Input the absolute path of your cpu folder: ").strip()
+            ise = input("Input the absolute path of your ise folder: ").strip()
+            f.write(f"cpu_path={cpu}\n")
+            f.write(f"ise_path={ise}\n")
+            print("Please restart the program!")
+            return False
+
+    if not os.path.exists(cpu_path):
+        print(f"CPU path does not exist: {cpu_path}")
+        print("Please check the path of your cpu folder.")
+        os.system("del path_config.txt")
+        return False
+    if not os.path.exists(ise_path):
+        print(f"ISE path does not exist: {ise_path}")
+        print("Please check the path of your ise folder.")
+        os.system("del path_config.txt")
+        return False
 
     file_list = []
     for root, dirs, files in os.walk(cpu_path):
@@ -48,6 +81,8 @@ def run_ise_simulation():
     with open("raw_out.txt", "w") as out:
         subprocess.run(sim_cmd, stdout=out, stderr=subprocess.STDOUT)
 
+    return True
+
 
 def process_simulation_output():
     """Handling simulation output"""
@@ -69,6 +104,3 @@ def process_simulation_output():
 
     except Exception as e:
         print(f"Error during simulation output handling: {e}")
-
-run_ise_simulation()
-process_simulation_output()
